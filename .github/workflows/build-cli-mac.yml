@@ -125,13 +125,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd static-php-cli
-          # Extract extensions from craft.yml and download sources
-          EXTENSIONS=$(php -r "
-            \$config = yaml_parse_file('craft.yml');
-            echo implode(',', \$config['extensions']);
-          ")
-          echo "Downloading sources for extensions: \$EXTENSIONS"
-          php bin/spc download --with-php=${{ matrix.php }} --for-extensions=\$EXTENSIONS
+          # Extract extensions from craft.yml (between "extensions:" and "libs:" sections)
+          EXTENSIONS=$(awk '/^extensions:/,/^libs:/ {if ($0 ~ /^  - /) print $2}' craft.yml | tr '\n' ',' | sed 's/,$//')
+          echo "Downloading sources for extensions: $EXTENSIONS"
+          php bin/spc download --with-php=${{ matrix.php }} --for-extensions=$EXTENSIONS
 
       - name: Build PHP CLI
         run: |
