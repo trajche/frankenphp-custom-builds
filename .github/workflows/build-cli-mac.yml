@@ -121,6 +121,8 @@ jobs:
           php bin/spc doctor --auto-fix || true
 
       - name: Download sources
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd static-php-cli
           php bin/spc download --with-php=${{ matrix.php }} --all
