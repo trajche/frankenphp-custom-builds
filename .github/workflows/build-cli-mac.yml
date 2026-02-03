@@ -133,7 +133,10 @@ jobs:
       - name: Build PHP CLI
         run: |
           cd static-php-cli
-          php bin/spc build
+          # Extract extensions from craft.yml
+          EXTENSIONS=$(awk '/^extensions:/,/^libs:/ {if ($0 ~ /^  - /) print $2}' craft.yml | tr '\n' ',' | sed 's/,$//')
+          echo "Building PHP CLI with extensions: $EXTENSIONS"
+          php bin/spc build --build-cli $EXTENSIONS
 
       - name: Test binary
         run: |
