@@ -50,19 +50,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.3', '8.4', '8.5']
-        arch: ['arm64', 'x86_64']
         include:
-          - arch: arm64
+          - php: '8.4'
+            arch: arm64
             runner: macos-14
-          - arch: x86_64
-            runner: macos-13
-
-    if: |
-      github.event_name != 'workflow_dispatch' || (
-        (github.event.inputs.php_version == 'all' || github.event.inputs.php_version == matrix.php) &&
-        (github.event.inputs.architecture == 'both' || github.event.inputs.architecture == matrix.arch)
-      )
 
     steps:
       - name: Checkout repository
