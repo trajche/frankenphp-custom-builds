@@ -125,12 +125,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd static-php-cli
-          php bin/spc download --with-php=${{ matrix.php }} --all
+          php bin/spc download
 
       - name: Build PHP CLI
         run: |
           cd static-php-cli
-          php bin/spc build --build-cli
+          php bin/spc build
 
       - name: Test binary
         run: |
