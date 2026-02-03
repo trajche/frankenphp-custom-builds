@@ -123,7 +123,7 @@ jobs:
       - name: Download sources
         run: |
           cd static-php-cli
-          php bin/spc download --with-php=${{ matrix.php }}
+          php bin/spc download --with-php=${{ matrix.php }} --all
 
       - name: Build PHP CLI
         run: |
