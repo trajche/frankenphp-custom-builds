@@ -1,0 +1,49 @@
+# Build artifacts
+*.o
+*.a
+*.so
+*.dylib
+*.exe
+
+# Build directories
+build/
+buildroot/
+dist/
+static-php-cli/
+frankenphp/
+
+# Binary outputs
+php-cli-*
+frankenphp-*
+!frankenphp-custom-builds
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Archives
+*.zip
+*.tar.gz
+*.tar.bz2
+*.tgz
+
+# Dependencies
+vendor/
+node_modules/
+composer.lock
+package-lock.json

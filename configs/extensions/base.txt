@@ -1,0 +1,59 @@
+# Base extensions included in all PHP versions
+# Database
+mongodb
+pdo
+pdo_mysql
+pdo_pgsql
+pdo_sqlite
+mysqli
+redis
+
+# Core functionality
+curl
+openssl
+mbstring
+zip
+zlib
+bz2
+sodium
+
+# Special requirements
+ffi
+spx
+
+# Image processing
+gd
+imagick
+exif
+
+# XML/Data processing
+xml
+dom
+simplexml
+xmlreader
+xmlwriter
+soap
+xsl
+
+# Internationalization
+intl
+
+# Math
+bcmath
+gmp
+
+# Caching
+apcu
+opcache
+
+# System
+pcntl
+posix
+sockets
+
+# Utilities
+fileinfo
+filter
+tokenizer
+calendar
+ctype

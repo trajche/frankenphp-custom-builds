@@ -1,0 +1,104 @@
+# static-php-cli configuration for PHP 8.4 CLI builds
+# Note: IMAP extension removed in PHP 8.4
+
+php-version: "8.4"
+
+sapi:
+  - cli
+
+extensions:
+  # Special requirements
+  - mongodb
+  - ffi
+  - spx
+
+  # Database
+  - pdo
+  - pdo_mysql
+  - pdo_pgsql
+  - pdo_sqlite
+  - mysqli
+  - redis
+
+  # Core functionality
+  - curl
+  - openssl
+  - mbstring
+  - zip
+  - zlib
+  - bz2
+  - sodium
+
+  # Image processing
+  - gd
+  - imagick
+  - exif
+
+  # XML/Data processing
+  - xml
+  - dom
+  - simplexml
+  - xmlreader
+  - xmlwriter
+  - soap
+  - xsl
+
+  # Internationalization
+  - intl
+
+  # Math
+  - bcmath
+  - gmp
+
+  # Caching
+  - apcu
+  - opcache
+
+  # System
+  - pcntl
+  - posix
+  - sockets
+
+  # Utilities
+  - fileinfo
+  - filter
+  - tokenizer
+  - calendar
+  - ctype
+  - iconv
+  - session
+  - phar
+
+libs:
+  - libmongoc
+  - libffi
+  - libcurl
+  - libssl
+  - libpng
+  - libjpeg
+  - libwebp
+  - imagemagick
+  - libxml2
+  - libxslt
+  - icu
+  - libzip
+  - libbz2
+  - libsodium
+
+build-options:
+  - --with-openssl
+  - --with-curl
+  - --enable-gd
+  - --with-jpeg
+  - --with-webp
+  - --enable-intl
+  - --enable-opcache
+  - --enable-pcntl
+  - --enable-sockets
+  - --enable-bcmath
+  - --with-gmp
+  - --with-sodium
+  - --enable-ffi
+
+optimize: true
+strip: true

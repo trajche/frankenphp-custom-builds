@@ -1,0 +1,2 @@
+# Additional extensions for PHP 8.5
+# Currently no PHP 8.5-specific extensions
