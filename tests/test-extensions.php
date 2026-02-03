@@ -69,7 +69,14 @@ $found = [];
 
 foreach ($required as $ext) {
     $ext_lower = strtolower($ext);
-    if (!in_array($ext_lower, $loaded)) {
+    $is_loaded = in_array($ext_lower, $loaded);
+
+    // Special case: opcache might be named "zend opcache"
+    if (!$is_loaded && $ext_lower === 'opcache') {
+        $is_loaded = in_array('zend opcache', $loaded);
+    }
+
+    if (!$is_loaded) {
         $missing[] = $ext;
         echo "✗ $ext (MISSING)\n";
     } else {
