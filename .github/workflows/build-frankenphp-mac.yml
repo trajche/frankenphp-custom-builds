@@ -154,7 +154,7 @@ jobs:
         run: |
           cd frankenphp
 
-          BINARY_PATH="./dist/frankenphp-darwin-${{ matrix.arch }}"
+          BINARY_PATH="./dist/frankenphp-mac-${{ matrix.arch }}"
 
           if [ ! -f "$BINARY_PATH" ]; then
             echo "Error: Binary not found at $BINARY_PATH"
@@ -190,7 +190,7 @@ jobs:
           cd frankenphp
 
           BINARY_NAME="php-web-${{ matrix.php }}-darwin-${{ matrix.arch }}"
-          BINARY_PATH="./dist/frankenphp-darwin-${{ matrix.arch }}"
+          BINARY_PATH="./dist/frankenphp-mac-${{ matrix.arch }}"
 
           cp "$BINARY_PATH" "../${BINARY_NAME}"
           chmod +x "../${BINARY_NAME}"
