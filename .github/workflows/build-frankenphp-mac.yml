@@ -133,6 +133,8 @@ jobs:
           ls -la
 
       - name: Build FrankenPHP
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd frankenphp
 
