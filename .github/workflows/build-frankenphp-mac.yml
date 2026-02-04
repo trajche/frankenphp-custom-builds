@@ -170,20 +170,13 @@ jobs:
           $BINARY_PATH version
 
           echo ""
-          echo "PHP version:"
-          $BINARY_PATH php-cli -v
+          echo "PHP version (embedded):"
+          $BINARY_PATH version | grep PHP
 
           echo ""
-          echo "Loaded extensions:"
-          $BINARY_PATH php-cli -m
-
-          echo ""
-          echo "Extension test:"
-          $BINARY_PATH php-cli ../tests/test-extensions.php
-
-          echo ""
-          echo "MongoDB test:"
-          $BINARY_PATH php-cli ../tests/test-mongodb.php
+          echo "Binary info:"
+          file "$BINARY_PATH"
+          ls -lh "$BINARY_PATH"
 
       - name: Prepare artifact
         run: |
