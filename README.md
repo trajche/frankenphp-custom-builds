@@ -24,9 +24,9 @@ chmod +x php
 ./php -v
 
 # FrankenPHP server binary
-curl -L https://github.com/YOUR_USERNAME/frankenphp-custom-builds/releases/latest/download/frankenphp-8.4-darwin-arm64 -o frankenphp
-chmod +x frankenphp
-./frankenphp version
+curl -L https://github.com/YOUR_USERNAME/frankenphp-custom-builds/releases/latest/download/php-web-8.4-darwin-arm64 -o php-web
+chmod +x php-web
+./php-web version
 ```
 
 ### Build Locally (macOS)
@@ -53,6 +53,7 @@ chmod +x frankenphp
 
 ### Build via GitHub Actions
 
+**For CLI builds:**
 1. Go to the **Actions** tab
 2. Select **"Build CLI - macOS"**
 3. Click **"Run workflow"**
@@ -61,6 +62,17 @@ chmod +x frankenphp
    - Architecture: `arm64`
    - Upload artifact: ✓
 5. Wait ~25 minutes
+6. Download artifact from workflow run
+
+**For FrankenPHP builds:**
+1. Go to the **Actions** tab
+2. Select **"Build FrankenPHP - macOS"**
+3. Click **"Run workflow"**
+4. Select:
+   - PHP version: `8.4`
+   - Architecture: `arm64`
+   - Upload artifact: ✓
+5. Wait ~40-60 minutes
 6. Download artifact from workflow run
 
 ## Included Extensions
@@ -115,15 +127,15 @@ chmod +x frankenphp
 ./php-cli-8.4-darwin-arm64 -m  # List extensions
 ```
 
-### FrankenPHP Server (frankenphp-*)
+### FrankenPHP Server (php-web-*)
 - PHP + Caddy web server
 - Full HTTP/2, HTTP/3 support
 - Larger size (~80-120MB)
 - Use for: web apps, API servers
 
 ```bash
-./frankenphp-8.4-darwin-arm64 php-server --listen :8080 --root /path/to/app
-./frankenphp-8.4-darwin-arm64 php-cli script.php  # CLI mode also available
+./php-web-8.4-darwin-arm64 php-server --listen :8080 --root /path/to/app
+./php-web-8.4-darwin-arm64 php-cli script.php  # CLI mode also available
 ```
 
 ## Supported Platforms
@@ -159,9 +171,12 @@ Builds PHP CLI binaries for macOS. Supports:
 **Build time:** ~20-30 minutes per binary
 
 ### Build FrankenPHP - macOS
-**File:** `.github/workflows/build-server-mac.yml` (coming soon)
+**File:** `.github/workflows/build-frankenphp-mac.yml`
 
-Builds FrankenPHP server binaries for macOS.
+Builds FrankenPHP server binaries for macOS. Supports:
+- PHP versions: 8.3, 8.4, 8.5, or all
+- Architectures: arm64, x86_64, or both
+- Manual trigger with inputs
 
 **Build time:** ~40-60 minutes per binary
 
@@ -222,7 +237,7 @@ Tests a built binary (CLI or FrankenPHP).
 **Examples:**
 ```bash
 ./scripts/test-binary.sh php-cli-8.4-darwin-arm64
-./scripts/test-binary.sh frankenphp-8.4-darwin-arm64
+./scripts/test-binary.sh php-web-8.4-darwin-arm64
 ```
 
 ## Testing
@@ -243,7 +258,7 @@ Tests MongoDB extension functionality.
 
 ### Server Tests
 ```bash
-./frankenphp-8.4-darwin-arm64 php-server --listen :8080 --root tests
+./php-web-8.4-darwin-arm64 php-server --listen :8080 --root tests
 curl http://localhost:8080/test-server.php
 ```
 
@@ -313,7 +328,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 - [x] Mac Silicon CLI builds
 - [x] Mac Intel CLI builds
-- [ ] Mac FrankenPHP builds
+- [x] Mac FrankenPHP builds
 - [ ] Linux CLI builds
 - [ ] Linux FrankenPHP builds
 - [ ] Windows WSL2 support

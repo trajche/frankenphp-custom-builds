@@ -7,7 +7,7 @@ if [ -z "$BINARY" ]; then
     echo
     echo "Examples:"
     echo "  $0 php-cli-8.4-darwin-arm64"
-    echo "  $0 frankenphp-8.4-darwin-arm64"
+    echo "  $0 php-web-8.4-darwin-arm64"
     exit 1
 fi
 
@@ -26,7 +26,7 @@ echo "======================================"
 echo
 
 # Detect binary type
-if [[ "$BINARY" == *"frankenphp"* ]]; then
+if [[ "$BINARY" == *"php-web"* ]] || [[ "$BINARY" == *"frankenphp"* ]]; then
     IS_FRANKENPHP=1
     echo "Detected: FrankenPHP binary"
 else

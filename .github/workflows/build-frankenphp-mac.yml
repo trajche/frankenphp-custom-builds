@@ -1,0 +1,220 @@
+name: Build FrankenPHP - macOS
+
+on:
+  workflow_dispatch:
+    inputs:
+      php_version:
+        description: 'PHP version to build'
+        required: true
+        type: choice
+        options:
+          - '8.3'
+          - '8.4'
+          - '8.5'
+          - 'all'
+        default: '8.4'
+      architecture:
+        description: 'macOS architecture'
+        required: true
+        type: choice
+        options:
+          - 'arm64'
+          - 'x86_64'
+          - 'both'
+        default: 'arm64'
+      upload_artifact:
+        description: 'Upload binary as artifact'
+        required: false
+        type: boolean
+        default: true
+  push:
+    branches:
+      - main
+    paths:
+      - 'configs/frankenphp/**'
+      - 'configs/extensions/**'
+      - 'scripts/build-frankenphp.sh'
+      - '.github/workflows/build-frankenphp-mac.yml'
+  pull_request:
+    paths:
+      - 'configs/frankenphp/**'
+      - 'configs/extensions/**'
+      - 'scripts/build-frankenphp.sh'
+      - '.github/workflows/build-frankenphp-mac.yml'
+
+jobs:
+  build:
+    name: FrankenPHP ${{ matrix.php }} - ${{ matrix.arch }}
+    runs-on: ${{ matrix.runner }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - php: '8.4'
+            arch: arm64
+            runner: macos-14
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Homebrew
+        run: |
+          echo "Homebrew setup"
+          if [ "${{ matrix.arch }}" = "arm64" ]; then
+            echo "HOMEBREW_PREFIX=/opt/homebrew" >> $GITHUB_ENV
+          else
+            echo "HOMEBREW_PREFIX=/usr/local" >> $GITHUB_ENV
+          fi
+
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+
+      - name: Install dependencies
+        run: |
+          # Update Homebrew
+          brew update
+
+          # Install build dependencies
+          brew install \
+            pkg-config \
+            autoconf \
+            automake \
+            libtool \
+            bison \
+            re2c
+
+      - name: Verify installation
+        run: |
+          echo "Go version:"
+          go version
+
+          echo ""
+          echo "Environment:"
+          echo "  HOMEBREW_PREFIX=$HOMEBREW_PREFIX"
+          echo "  PATH=$PATH"
+
+      - name: Load FrankenPHP configuration
+        run: |
+          CONFIG_FILE="configs/frankenphp/build-${{ matrix.php }}.env"
+          echo "Loading configuration from: $CONFIG_FILE"
+
+          if [ ! -f "$CONFIG_FILE" ]; then
+            echo "Error: Config file not found"
+            exit 1
+          fi
+
+          # Source the config and export to GITHUB_ENV
+          source "$CONFIG_FILE"
+
+          echo "PHP_VERSION=$PHP_VERSION" >> $GITHUB_ENV
+          echo "FRANKENPHP_VERSION=$FRANKENPHP_VERSION" >> $GITHUB_ENV
+          echo "PHP_EXTENSIONS=$PHP_EXTENSIONS" >> $GITHUB_ENV
+          echo "PHP_EXTENSION_LIBS=$PHP_EXTENSION_LIBS" >> $GITHUB_ENV
+          echo "XCADDY_ARGS=$XCADDY_ARGS" >> $GITHUB_ENV
+          echo "CLEAN=$CLEAN" >> $GITHUB_ENV
+          echo "NO_COMPRESS=$NO_COMPRESS" >> $GITHUB_ENV
+          echo "DEBUG_SYMBOLS=$DEBUG_SYMBOLS" >> $GITHUB_ENV
+          echo "MIMALLOC=$MIMALLOC" >> $GITHUB_ENV
+
+          echo ""
+          echo "Configuration loaded:"
+          echo "  PHP_VERSION=$PHP_VERSION"
+          echo "  Extensions: $PHP_EXTENSIONS"
+
+      - name: Clone FrankenPHP
+        run: |
+          git clone --depth 1 https://github.com/dunglas/frankenphp.git
+          cd frankenphp
+          echo "FrankenPHP cloned:"
+          ls -la
+
+      - name: Build FrankenPHP
+        run: |
+          cd frankenphp
+
+          echo "======================================"
+          echo "Building FrankenPHP static binary"
+          echo "======================================"
+          echo "PHP Version: ${{ env.PHP_VERSION }}"
+          echo "Architecture: ${{ matrix.arch }}"
+          echo "This may take 40-60 minutes..."
+          echo "======================================"
+          echo
+
+          # Run the static build script
+          ./build-static.sh
+
+      - name: Test binary
+        run: |
+          cd frankenphp
+
+          BINARY_PATH="./dist/frankenphp-darwin-${{ matrix.arch }}"
+
+          if [ ! -f "$BINARY_PATH" ]; then
+            echo "Error: Binary not found at $BINARY_PATH"
+            echo "Contents of dist/:"
+            ls -la ./dist/ || echo "dist/ directory not found"
+            exit 1
+          fi
+
+          echo "Testing FrankenPHP binary..."
+          echo ""
+
+          echo "FrankenPHP version:"
+          $BINARY_PATH version
+
+          echo ""
+          echo "PHP version:"
+          $BINARY_PATH php-cli -v
+
+          echo ""
+          echo "Loaded extensions:"
+          $BINARY_PATH php-cli -m
+
+          echo ""
+          echo "Extension test:"
+          $BINARY_PATH php-cli ../tests/test-extensions.php
+
+          echo ""
+          echo "MongoDB test:"
+          $BINARY_PATH php-cli ../tests/test-mongodb.php
+
+      - name: Prepare artifact
+        run: |
+          cd frankenphp
+
+          BINARY_NAME="php-web-${{ matrix.php }}-darwin-${{ matrix.arch }}"
+          BINARY_PATH="./dist/frankenphp-darwin-${{ matrix.arch }}"
+
+          cp "$BINARY_PATH" "../${BINARY_NAME}"
+          chmod +x "../${BINARY_NAME}"
+
+          cd ..
+          echo "Binary size: $(du -h ${BINARY_NAME} | cut -f1)"
+
+          # Create checksum
+          shasum -a 256 "${BINARY_NAME}" > "${BINARY_NAME}.sha256"
+
+          echo "BINARY_NAME=${BINARY_NAME}" >> $GITHUB_ENV
+
+      - name: Upload artifact
+        if: ${{ github.event.inputs.upload_artifact != 'false' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.BINARY_NAME }}
+          path: |
+            ${{ env.BINARY_NAME }}
+            ${{ env.BINARY_NAME }}.sha256
+          retention-days: 30
+
+      - name: Upload to release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ${{ env.BINARY_NAME }}
+            ${{ env.BINARY_NAME }}.sha256

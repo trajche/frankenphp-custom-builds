@@ -74,7 +74,7 @@ $BINARY_PATH php-cli -m | head -20
 echo
 
 # Copy and rename output
-OUTPUT_NAME="frankenphp-${PHP_VERSION}-${OS}-${ARCH}"
+OUTPUT_NAME="php-web-${PHP_VERSION}-${OS}-${ARCH}"
 echo "Copying binary to: ${OUTPUT_NAME}"
 cp "$BINARY_PATH" "../${OUTPUT_NAME}"
 
