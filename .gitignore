@@ -10,7 +10,7 @@ build/
 buildroot/
 dist/
 static-php-cli/
-frankenphp/
+/frankenphp/
 
 # Binary outputs
 php-cli-*
