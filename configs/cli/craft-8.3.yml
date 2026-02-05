@@ -70,6 +70,42 @@ extensions:
   - session
   - phar
 
+  # Compression/Encoding
+  - brotli
+  - lz4
+  - xz
+  - zstd
+
+  # Data Serialization
+  - igbinary
+  - protobuf
+
+  # Memory/Cache
+  - memcache
+  - memcached
+
+  # System/IPC
+  - parallel
+  - shmop
+  - sysvmsg
+  - sysvsem
+  - sysvshm
+
+  # Network/Remote
+  - amqp
+  - ssh2
+
+  # System Utilities
+  - ast
+  - dba
+  - ftp
+  - gettext
+  - ldap
+  - readline
+  - tidy
+  - xlswriter
+  - yaml
+
 libs:
   - libmongoc
   - libffi
@@ -86,6 +122,20 @@ libs:
   - libbz2
   - libsodium
   - libc-client
+  - libbrotli
+  - liblz4
+  - liblzma
+  - libzstd
+  - libssh2
+  - openldap
+  - librabbitmq
+  - libtidy
+  - protobuf
+  - readline
+  - gettext
+  - libmemcached
+  - libxlsxwriter
+  - libyaml
 
 build-options:
   - --with-openssl
@@ -103,6 +153,10 @@ build-options:
   - --enable-ffi
   - --with-imap
   - --with-imap-ssl
+  - --enable-brotli
+  - --enable-zstd
+  - --with-readline
+  - --with-yaml
 
 optimize: true
 strip: true

@@ -57,3 +57,42 @@ filter
 tokenizer
 calendar
 ctype
+iconv
+session
+phar
+
+# Compression/Encoding
+brotli
+lz4
+xz
+zstd
+
+# Data Serialization
+igbinary
+protobuf
+
+# Memory/Cache
+memcache
+memcached
+
+# System/IPC
+parallel
+shmop
+sysvmsg
+sysvsem
+sysvshm
+
+# Network/Remote
+amqp
+ssh2
+
+# System Utilities
+ast
+dba
+ftp
+gettext
+ldap
+readline
+tidy
+xlswriter
+yaml
