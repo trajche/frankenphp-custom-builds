@@ -1,15 +1,16 @@
 # FrankenPHP Custom Builds
 
-Custom-built PHP binaries with pre-configured extensions including MongoDB, FFI, SPX, and IMAP (PHP 8.3 only).
+Production-ready PHP binaries matching official FrankenPHP with MongoDB extension added.
 
 ## Features
 
 - **Two binary types**: CLI-only and FrankenPHP server (with Caddy)
 - **Multiple PHP versions**: 8.3, 8.4, 8.5
 - **Multi-platform**: macOS (arm64/x86_64), Linux (x86_64/aarch64)
-- **40+ extensions**: MongoDB, FFI, SPX, IMAP (8.3), Redis, PDO, GD, and more
-- **Modular builds**: Build only what you need
-- **Fast iteration**: Test Mac Silicon builds in ~20-30 minutes
+- **78-79 extensions**: All official FrankenPHP extensions + MongoDB
+- **Complete system libraries**: libavif, nghttp2, nghttp3, ngtcp2, watcher for HTTP/3 and QUIC support
+- **Laravel-ready**: All extensions needed for modern Laravel applications
+- **Fast iteration**: Mac Silicon builds in ~40-45 minutes
 
 ## Quick Start
 
@@ -77,27 +78,28 @@ chmod +x php-web
 
 ## Included Extensions
 
-### Required Extensions (All Versions)
-- **mongodb** - Native MongoDB driver
-- **ffi** - Foreign Function Interface
-- **spx** - Profiler extension (Linux/macOS only)
-- **imap** - Email IMAP functions (PHP 8.3 only)
+**Total: 78-79 extensions** (77 official FrankenPHP + mongodb + imap for PHP 8.3)
 
-### Database Extensions
-- pdo, pdo_mysql, pdo_pgsql, pdo_sqlite
-- mysqli, redis
+### Critical Extensions for Laravel
+- **mbregex** - Multibyte regex (UTF-8 string operations)
+- **password-argon2** - Modern password hashing
+- **mysqlnd** - MySQL native driver
+- **yaml** - Configuration file parsing
+- **zstd** - Compression (Caddy uses this)
+- **memcached** - Caching and session storage
+- **mongodb** - MongoDB driver (custom addition)
 
-### Core Functionality
-- curl, openssl, mbstring
-- zip, zlib, bz2, sodium
+### Complete Extension List
+amqp, apcu, ast, bcmath, brotli, bz2, calendar, ctype, curl, dba, dom, exif, fileinfo, filter, ftp, gd, gmp, gettext, iconv, igbinary, imagick, intl, ldap, lz4, mbregex, mbstring, memcache, memcached, mysqli, mysqlnd, opcache, openssl, password-argon2, parallel, pcntl, pdo, pdo_mysql, pdo_pgsql, pdo_sqlite, pdo_sqlsrv, pgsql, phar, posix, protobuf, readline, redis, session, shmop, simplexml, soap, sockets, sodium, sqlite3, ssh2, sysvmsg, sysvsem, sysvshm, tidy, tokenizer, xlswriter, xml, xmlreader, xmlwriter, xsl, xz, zip, zlib, yaml, zstd, mongodb
 
-### Image Processing
-- gd, imagick, exif
+**PHP 8.3 includes:** imap (removed in 8.4+)
 
-### XML/Data Processing
-- xml, dom, simplexml
-- xmlreader, xmlwriter
-- soap, xsl
+### System Libraries (PHP_EXTENSION_LIBS)
+- **libavif** - AVIF image format support
+- **nghttp2** - HTTP/2 protocol support
+- **nghttp3** - HTTP/3 protocol support
+- **ngtcp2** - QUIC protocol support
+- **watcher** - File system watching
 
 ### Internationalization
 - intl
