@@ -16,13 +16,18 @@ extensions:
   - pdo_mysql
   - pdo_pgsql
   - pdo_sqlite
+  - pdo_sqlsrv
   - mysqli
+  - mysqlnd
+  - pgsql
+  - sqlite3
   - redis
 
   # Core functionality
   - curl
   - openssl
   - mbstring
+  - mbregex
   - zip
   - zlib
   - bz2
@@ -82,11 +87,12 @@ extensions:
   - memcache
   - memcached
 
-  # System/IPC (parallel requires ZTS - only available in FrankenPHP)
+  # System/IPC
   - shmop
   - sysvmsg
   - sysvsem
   - sysvshm
+  - parallel  # Works in CLI builds too
 
   # Network/Remote
   - amqp
