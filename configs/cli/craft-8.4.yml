@@ -93,7 +93,7 @@ extensions:
   - sysvmsg
   - sysvsem
   - sysvshm
-  - parallel  # Works in CLI builds too
+  # Note: parallel requires ZTS (FrankenPHP only)
 
   # Network/Remote
   - amqp
