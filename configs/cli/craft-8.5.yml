@@ -82,8 +82,7 @@ extensions:
   - memcache
   - memcached
 
-  # System/IPC
-  - parallel
+  # System/IPC (parallel requires ZTS - only available in FrankenPHP)
   - shmop
   - sysvmsg
   - sysvsem
