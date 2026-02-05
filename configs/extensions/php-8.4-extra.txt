@@ -1,3 +1,0 @@
-# Additional extensions for PHP 8.4
-# Currently no PHP 8.4-specific extensions
-# IMAP was removed in PHP 8.4

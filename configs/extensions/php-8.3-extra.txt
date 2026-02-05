@@ -1,3 +1,0 @@
-# Additional extensions for PHP 8.3 only
-# IMAP is available in PHP 8.3 but removed in 8.4+
-imap
