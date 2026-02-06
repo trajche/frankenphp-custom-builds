@@ -44,11 +44,6 @@ jobs:
   build:
     name: FrankenPHP ${{ matrix.php }} - ${{ matrix.arch }}
     runs-on: ${{ matrix.runner }}
-    if: >-
-      github.event_name != 'workflow_dispatch' ||
-      github.event.inputs.php_version == 'all' ||
-      github.event.inputs.php_version == matrix.php
-
     strategy:
       fail-fast: false
       matrix:
