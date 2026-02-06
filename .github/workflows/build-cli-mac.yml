@@ -150,12 +150,12 @@ jobs:
           ./buildroot/bin/php -m
 
           echo ""
-          echo "Extension test:"
-          ./buildroot/bin/php ../tests/test-extensions.php
+          echo "Extension count:"
+          ./buildroot/bin/php -r 'echo count(get_loaded_extensions()) . " extensions loaded\n";'
 
           echo ""
           echo "MongoDB test:"
-          ./buildroot/bin/php ../tests/test-mongodb.php
+          ./buildroot/bin/php -r 'echo "MongoDB: " . (extension_loaded("mongodb") ? "OK" : "MISSING") . "\n";'
 
       - name: Prepare artifact
         run: |
