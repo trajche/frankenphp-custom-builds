@@ -32,13 +32,11 @@ on:
       - main
     paths:
       - 'configs/frankenphp/**'
-      - 'configs/extensions/**'
       - 'scripts/build-frankenphp.sh'
       - '.github/workflows/build-frankenphp-mac.yml'
   pull_request:
     paths:
       - 'configs/frankenphp/**'
-      - 'configs/extensions/**'
       - 'scripts/build-frankenphp.sh'
       - '.github/workflows/build-frankenphp-mac.yml'
 
@@ -46,12 +44,22 @@ jobs:
   build:
     name: FrankenPHP ${{ matrix.php }} - ${{ matrix.arch }}
     runs-on: ${{ matrix.runner }}
+    if: >-
+      github.event_name != 'workflow_dispatch' ||
+      github.event.inputs.php_version == 'all' ||
+      github.event.inputs.php_version == matrix.php
 
     strategy:
       fail-fast: false
       matrix:
         include:
+          - php: '8.3'
+            arch: arm64
+            runner: macos-14
           - php: '8.4'
+            arch: arm64
+            runner: macos-14
+          - php: '8.5'
             arch: arm64
             runner: macos-14
 
