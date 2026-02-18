@@ -76,9 +76,8 @@ jobs:
           # Update Homebrew
           brew update
 
-          # Install dependencies
+          # Install build tools
           brew install \
-            shivammathur/php/php@${{ matrix.php }}-zts \
             pkg-config \
             composer \
             autoconf \
@@ -87,7 +86,8 @@ jobs:
             bison \
             re2c
 
-          # Link PHP
+          # Install PHP ZTS (may fail to link if another PHP is already linked)
+          brew install shivammathur/php/php@${{ matrix.php }}-zts || true
           brew link --overwrite --force shivammathur/php/php@${{ matrix.php }}-zts || true
 
       - name: Verify installation
@@ -108,7 +108,7 @@ jobs:
         run: |
           git clone --depth 1 https://github.com/crazywhalecc/static-php-cli.git
           cd static-php-cli
-          composer install --no-dev --optimize-autoloader
+          composer install --no-dev --optimize-autoloader --ignore-platform-reqs
 
       - name: Configure build
         run: |
